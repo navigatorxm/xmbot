@@ -1,0 +1,16 @@
+pydantic>=2.5
+pydantic-settings>=2.1
+sqlalchemy>=2.0
+alembic>=1.13
+ccxt>=4.2
+cryptography>=42.0
+apscheduler>=3.10
+fastapi>=0.109
+uvicorn[standard]>=0.27
+python-jose[cryptography]>=3.3
+passlib[bcrypt]>=1.7
+weasyprint>=61.0
+reportlab>=4.1
+httpx>=0.26
+python-multipart>=0.0.9
+aiofiles>=23.2
