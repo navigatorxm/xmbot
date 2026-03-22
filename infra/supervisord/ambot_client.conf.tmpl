@@ -1,0 +1,20 @@
+# Template for T3 client container supervisor programs.
+# Replace {CLIENT_ID} with the actual client UUID before use.
+# Each T3 client runs in its own container with its own engine instance.
+
+[program:ambot_t3_{CLIENT_ID}]
+command=python -m ambot.main --client-id {CLIENT_ID}
+directory=/app
+autostart=true
+autorestart=true
+startsecs=5
+startretries=3
+stopwaitsecs=30
+stdout_logfile=/app/logs/ambot_{CLIENT_ID}.log
+stdout_logfile_maxbytes=10MB
+stdout_logfile_backups=3
+stderr_logfile=/app/logs/ambot_{CLIENT_ID}_err.log
+environment=
+    ENV="production",
+    LOG_LEVEL="INFO",
+    CLIENT_ID="{CLIENT_ID}"

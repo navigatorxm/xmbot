@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "xmbot"
+version = "0.1.0"
+description = "Deterministic crypto trading bot management platform"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.scripts]
+ambot = "ambot.core.engine:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ambot*", "web*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

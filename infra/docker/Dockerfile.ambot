@@ -1,0 +1,35 @@
+FROM python:3.11-slim
+
+LABEL maintainer="xmbot"
+LABEL description="ambot execution engine"
+
+# System dependencies for WeasyPrint (PDF generation)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libcairo2 \
+    libgdk-pixbuf2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements/base.txt requirements/prod.txt ./requirements/
+RUN pip install --no-cache-dir -r requirements/prod.txt
+
+# Copy source
+COPY ambot/ ./ambot/
+COPY .env.example .env.example
+
+# Create required directories
+RUN mkdir -p data/db data/statements logs
+
+# Non-root user
+RUN useradd -m -u 1000 ambot && chown -R ambot:ambot /app
+USER ambot
+
+# Health check — verify the engine can be imported
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD python -c "from ambot.config import get_config; get_config()" || exit 1
+
+CMD ["python", "-m", "ambot.main"]
